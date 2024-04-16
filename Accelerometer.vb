@@ -231,8 +231,8 @@ Public Class Accelerometer
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-
         Try
+            Me.Cursor = Cursors.WaitCursor
             _config.setOrientationString(cbOrientation.SelectedItem, cbPinsFacingUp.Checked, cbSideMounted.Checked)
             _config.setSensitivityString(cbMultiplier.SelectedItem)
             _config.accelerometerDeadZone = CUShort(tbDeadZone.Text)
@@ -242,7 +242,10 @@ Public Class Accelerometer
             _config.tiltSuppression = cbTiltSuppress.SelectedItem.ToString
             _board.setConfig(_config)
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             MessageBox.Show("error when saving data, maybe board is disconnected?")
+        Finally
+            Me.Cursor = Cursors.Default
         End Try
     End Sub
 

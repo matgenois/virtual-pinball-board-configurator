@@ -111,6 +111,7 @@ Public Class Configuration
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
+            Me.Cursor = Cursors.WaitCursor
             _board.enableAdminFunction(ADMIN.OFF)
             _config.solenoidOutputMap(0) = CByte(cbOutputTrigger1.SelectedItem)
             _config.solenoidOutputMap(1) = CByte(cbOutputTrigger2.SelectedItem)
@@ -169,7 +170,10 @@ Public Class Configuration
 
             _board.setConfig(_config)
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             MessageBox.Show("error saving configuration. Check that board is connected.")
+        Finally
+            Me.Cursor = Cursors.Default
         End Try
 
 

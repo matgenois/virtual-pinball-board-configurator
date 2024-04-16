@@ -25,6 +25,8 @@ Public Class RS232
     Private WithEvents objSerial As System.IO.Ports.SerialPort
     Private context As Threading.SynchronizationContext = Threading.SynchronizationContext.Current
     Private _ReceiveDataEvents As Boolean = False
+    Private _lastLog As String = ""
+
     Public Sub New(port As String)
         objSerial = New IO.Ports.SerialPort(port)
     End Sub
@@ -112,8 +114,14 @@ Public Class RS232
         Dim splitString = System.Text.RegularExpressions.Regex.Split(lineData.ToString, vbCrLf)
         If splitString.Length > 1 Then
             For i As Integer = 0 To splitString.Length - 2
-                Console.WriteLine("rs232 actual Data: " & splitString(i))
-                Logger.LogMessageToFile("rs232 actual Data: " & splitString(i))
+                Dim currentLog As String = "rs232 actual Data: " & splitString(i)
+                If currentLog <> _lastLog Then
+                    Console.WriteLine(currentLog)
+                    Logger.LogMessageToFile(currentLog)
+                    _lastLog = currentLog
+                End If
+                'Console.WriteLine(toto)
+                'Logger.LogMessageToFile("rs232 actual Data: " & splitString(i))
                 sendRS232Changed(New RS232ChangedArgs(splitString(i), "connected"))
             Next
             lineData.Clear()

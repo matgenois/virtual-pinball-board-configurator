@@ -43,7 +43,7 @@ Public Class AdjustmentSlider
             cbCatagory.Items.Remove("Shared")
         End If
         If outputNumber > 3 And outputNumber < 15 Then
-            tbMaxValue.Enabled = False
+            tbMaxValue.Value = 255
         End If
         cbCatagory.SelectedItem = _config.toySpecialOption(outputNumber)
         cbMilliseconds.SelectedItem = _config.maxOutputTime(outputNumber) * 100
@@ -54,20 +54,24 @@ Public Class AdjustmentSlider
     End Sub
 
     Private Sub tbMaxValue_Scroll(sender As Object, e As EventArgs) Handles tbMaxValue.Scroll
-        _config.maxOutputState(outputNumber) = tbMaxValue.Value
-        lblMaxValue.Text = tbMaxValue.Value
-
-        _delayRefresh = True
-        _intensityValue = tbMaxValue.Value
-        'setButton(tbIntensity.Value)
-        If trd.IsAlive = False Then
-            Console.WriteLine("starting new thread")
-            trd = New Thread(AddressOf delayRefresh)
-            trd.IsBackground = True
-            trd.Start()
+        If outputNumber > 3 And outputNumber < 15 Then
+            tbMaxValue.Value = 255
         Else
-            trdCount = 5
-            Console.WriteLine("making thread last longer")
+            _config.maxOutputState(outputNumber) = tbMaxValue.Value
+            lblMaxValue.Text = tbMaxValue.Value
+
+            _delayRefresh = True
+            _intensityValue = tbMaxValue.Value
+            'setButton(tbIntensity.Value)
+            If trd.IsAlive = False Then
+                Console.WriteLine("starting new thread")
+                trd = New Thread(AddressOf delayRefresh)
+                trd.IsBackground = True
+                trd.Start()
+            Else
+                trdCount = 5
+                Console.WriteLine("making thread last longer")
+            End If
         End If
     End Sub
     Sub delayRefresh()

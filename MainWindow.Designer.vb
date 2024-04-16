@@ -166,7 +166,7 @@ Partial Class MainWindow
         Me.cbSimulation.TabIndex = 9
         Me.cbSimulation.Text = "Simulation"
         Me.cbSimulation.UseVisualStyleBackColor = True
-        Me.cbSimulation.Visible = False
+        Me.cbSimulation.Visible = True
         '
         'btnUpdateFirmware
         '

@@ -275,6 +275,7 @@ Public Class Buttons
     Private Sub btnSendCalibration_Click(sender As Object, e As EventArgs) Handles btnSendCalibration.Click
         Try
             MessageBox.Show("Note that steam calibration settings are not saved to PinOne. Please ensure you have copied the settings for steam and saved them as your calibration in steam to ensure you do not lose any data")
+            Me.Cursor = Cursors.WaitCursor
             If cbDisableJoystick.Checked = True Then
                 _config.disableButtonPressWhenKeyboardEnabled = True
             Else
@@ -283,7 +284,10 @@ Public Class Buttons
             _config.buttonDebounceCounter = cbButtonDebounceTime.SelectedItem
             _board.setConfig(_config)
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             MessageBox.Show("Error while saving plunger values, check to ensure board is connected")
+        Finally
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub

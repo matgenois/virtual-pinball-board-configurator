@@ -214,6 +214,7 @@ Public Class MainWindow
         Dim configFileLocation As String = System.IO.Path.Combine(Application.StartupPath(), "PinOneSettings.xml")
         If File.Exists(configFileLocation) Then
             Try
+                Me.Cursor = Cursors.WaitCursor
 
                 Dim xmldoc As New XmlDocument
                 xmldoc.Load(configFileLocation)
@@ -224,19 +225,27 @@ Public Class MainWindow
                     Dim board As BoardConfiguration = TryCast(xml.Deserialize(currentStringReader), BoardConfiguration)
                     config.copyValues(board)
                 End Using
+                Me.Cursor = Cursors.Default
                 MessageBox.Show("Successfully retrieved configuration file in " & configFileLocation & vbNewLine & "Configuration will not be saved to PinOne until you click the 'upload config' button in the settings screen")
             Catch ex As Exception
+                Me.Cursor = Cursors.Default
                 MessageBox.Show("error saving PinOne configuration file. Ensure the file exists and try again")
+            Finally
+                Me.Cursor = Cursors.Default
             End Try
         Else
             MessageBox.Show("No configuration file found at " & configFileLocation)
         End If
-
-
     End Sub
 
     Private Sub btnSaveConfig_Click(sender As Object, e As EventArgs) Handles btnSaveConfig.Click
-        Board.setConfig(config)
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            Board.setConfig(config)
+
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
     End Sub
 
     Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click

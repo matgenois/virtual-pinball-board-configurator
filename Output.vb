@@ -16,9 +16,6 @@ Public Class Output
         _board = board
         _number = outputNumber
         gbMain.Text = "Output #" & (outputNumber + 1).ToString
-        If outputNumber > 3 And outputNumber < 15 Then
-            tbIntensity.Enabled = False
-        End If
     End Sub
     Public Sub setIntensityValue(val As Byte)
         If _delayRefresh = False Then
@@ -46,6 +43,9 @@ Public Class Output
     Private Sub tbIntensity_Scroll(sender As Object, e As EventArgs) Handles tbIntensity.Scroll
         _delayRefresh = True
         'setButton(tbIntensity.Value)
+        If _number > 3 And _number < 15 Then
+            tbIntensity.Value = 255
+        End If
         _intensityValue = tbIntensity.Value
         lblValue.Text = _intensityValue
         If trd.IsAlive = False Then
